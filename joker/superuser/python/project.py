@@ -6,9 +6,11 @@ import re
 import sys
 from os.path import join
 
+from joker.textmanip.tabular import format_help_section
+
 from joker.superuser.utils import under_templates_dir
 
-_nspinit_approaches = {
+_nsinits = {
     'i': '__import__("pkg_resources").declare_namespace(__name__)',
     'p': '__path__ = __import__("pkgutil").extend_path(__path__, __name__)',
 }
@@ -46,7 +48,7 @@ class ProjectDirMaker(object):
             '__init__.py': self.under_pkg_dir(),
         })
         if self.nsp:
-            self.common_files['nspinit'] = self.under_proj_dir('__init__.py')
+            self.common_files['nsinit'] = self.under_proj_dir('__init__.py')
 
     @classmethod
     def parse(cls, name):
@@ -72,7 +74,7 @@ class ProjectDirMaker(object):
 
     def make_dirs(self):
         for path in self.common_dirs.values():
-            os.makedirs(path)
+            os.makedirs(path, exist_ok=True)
         for path in self.common_files.values():
             open(path, 'a').close()
 
@@ -103,8 +105,8 @@ class ProjectDirMaker(object):
             with open(path, 'w') as fout:
                 fout.write(content + os.linesep)
 
-    def write_nspinit(self, approach):
-        self.write('nspinit', _nspinit_approaches.get(approach))
+    def write_nsinit(self, approach):
+        self.write('nsinit', _nsinits.get(approach))
 
     def write_version_variable(self):
         self.write('__init__.py', "__version__ = '0.0'")
@@ -123,10 +125,10 @@ class ProjectDirMaker(object):
         self.write('.gitignore', open(path).read())
 
 
-def make_project(name, setup, gitignore, require, nspinit_approach):
+def make_project(name, setup, gitignore, require, ns_approach):
     name, query = (name.split('%', maxsplit=1) + [''])[:2]
-    if query == 'nspinit':
-        print(_nspinit_approaches.get(nspinit_approach, ''))
+    if query == 'nsinit':
+        print(_nsinits.get(ns_approach, ''))
         return
     if query == 'gitignore':
         print(open(under_templates_dir('gitignore.txt')).read())
@@ -154,35 +156,40 @@ def make_project(name, setup, gitignore, require, nspinit_approach):
     mkr.make_dirs()
     mkr.write_setup(setup)
     mkr.write_gitignore(gitignore)
-    mkr.write_requirements(require)
+    mkr.write_requirements(require or [])
     mkr.write_manifest()
-    mkr.write_nspinit(nspinit_approach)
+    mkr.write_nsinit(ns_approach)
     mkr.write_version_variable()
 
 
 def run(prog=None, args=None):
     import argparse
-    desc = 'generate a python project structure'
-    s = ' (case sensitive)'
-    # epilog = '\n'.join([
-    #     format_help_section('Variables' + s, _variables),
-    #     format_help_section('Safe presets', _safe_presets),
-    #     format_help_section('Risky presets', _risky_presets),
-    # ])
+    desc = 'Generate a python project structure'
+    # s = ' (case sensitive)'
+    epilog = '\n'.join([
+        format_help_section('Namespace package approaches', _nsinits),
+        'About namespace packages:',
+        '  https://packaging.python.org/guides/packaging-namespace-packages/',
+    ])
     pr = argparse.ArgumentParser(
-        prog=prog, description=desc,  # epilog=epilog,
+        prog=prog, description=desc,  epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    pr.add_argument('-n', '--nspinit-approach', choices=['i', 'p', 'e'],
-                    default='i', help='namespace package style')
+    pr.add_argument('-n', '--ns-approach', choices=['i', 'p', 'e'],
+                    default='i', help='namespace package approach')
+
     pr.add_argument('-s', '--setup', metavar='template_setup.py',
-                    help='template for setup.py')
+                    help='path to a custom setup.py template')
+
     pr.add_argument('-g', '--gitignore', metavar='template_gitignore.txt',
-                    help='template for .gitignore')
-    pr.add_argument('-r', '--require', action='append',
-                    metavar='PKG', help='example: -r six -r numpy>=1.0.0')
-    pr.add_argument('name')
+                    help='path to a custom .gitignore template')
+
+    pr.add_argument('-r', '--require', action='append', metavar='PACKAGE',
+                    help='example: -r six -r numpy>=1.0.0')
+
+    pr.add_argument('name', metavar='[NAMESPACE.]PACKAGE_NAME[%QUERY]')
     ns = pr.parse_args(args)
+
     try:
         make_project(**vars(ns))
     except ValueError as e:
