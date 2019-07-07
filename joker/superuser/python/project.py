@@ -99,7 +99,7 @@ class ProjectDirMaker(object):
     def write(self, name, content):
         path = self.common_files.get(name)
         if path and content:
-            with open(path, 'w') as fout:
+            with open(path, 'a') as fout:
                 fout.write(content + os.linesep)
 
     def write_nsinit(self, approach):
