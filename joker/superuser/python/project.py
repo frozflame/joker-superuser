@@ -26,14 +26,10 @@ class ProjectDirMaker(object):
         :param nsp: namespace
         :param pkg: package name
         """
-        nsp = nsp.strip()
-        pkg = pkg.strip()
-        self.proj = '{}-{}'.format(nsp, pkg) if nsp else pkg
-        self.nsp = nsp
-        self.pkg = pkg
-        names = [self.proj, self.nsp, self.pkg]
-        names = [s for s in names if s]
-        self.names = names
+        self.nsp = nsp.strip()
+        self.pkg = pkg.strip()
+        names = [s for s in [self.nsp, self.pkg]]
+        self.names = ['-'.join(names)] + names
         testdir_name = '_'.join(['test'] + self.names[1:])
         self.common_dirs = {
             'docs': self.under_proj_dir('docs'),
@@ -41,14 +37,15 @@ class ProjectDirMaker(object):
             'test': self.under_proj_dir(testdir_name),
         }
         self.common_files = _vk_join({
-            '.gitignore': self.proj,
-            'requirements.txt': self.proj,
-            'MANIFEST.in': self.proj,
-            'setup.py': self.proj,
+            '.gitignore': self.names[0],
+            'requirements.txt': self.names[0],
+            'MANIFEST.in': self.names[0],
+            'setup.py': self.names[0],
             '__init__.py': self.under_pkg_dir(),
         })
         if self.nsp:
-            self.common_files['nsinit'] = self.under_proj_dir('__init__.py')
+            p = join(self.names[0], self.nsp, '__init__.py')
+            self.common_files['nsinit'] = p
 
     @classmethod
     def parse(cls, name):
@@ -62,7 +59,7 @@ class ProjectDirMaker(object):
         return cls(mat.group(1)[:-1] or '', mat.group(2))
 
     def under_proj_dir(self, *paths):
-        return join(self.proj, *paths)
+        return join(self.names[0], *paths)
 
     def under_pkg_dir(self, *paths):
         return join(*(self.names + list(paths)))
@@ -79,7 +76,7 @@ class ProjectDirMaker(object):
             open(path, 'a').close()
 
     def sub(self, text):
-        text = text.replace('__sus_h_name', self.proj)
+        text = text.replace('__sus_h_name', self.names[0])
         text = text.replace('__sus_i_name', '.'.join(self.names[1:]))
         text = text.replace('__sus_u_name', '_'.join(self.names[1:]))
         text = text.replace('__sus_namespace', self.nsp)
