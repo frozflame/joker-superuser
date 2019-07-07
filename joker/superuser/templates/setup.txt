@@ -9,9 +9,11 @@ from setuptools import setup, find_packages
 # CAUTION:
 # Do NOT import your package from your setup.py
 
-namespace = 'joker'
-package_name = 'superuser'
-description = ''
+_nsp = '__eg_namespace'
+_pkg = '__eg_package'
+_desc = ''
+_names = [_nsp, _pkg]
+_names = [s for s in _names if s]
 
 
 def read(filename):
@@ -20,10 +22,8 @@ def read(filename):
 
 
 def version_find():
-    if namespace:
-        path = '{}/{}/__init__.py'.format(namespace, package_name)
-    else:
-        path = '{}/__init__.py'.format(package_name)
+    names = _names + ['__init__.py']
+    path = os.path.join(*names)
     root = os.path.dirname(__file__)
     path = os.path.join(root, path)
     regex = re.compile(
@@ -40,20 +40,22 @@ def version_find():
 
 
 config = {
-    'name': package_name,
+    'name': '-'.join(_names),
     'version': version_find(),
-    'description': '' + description,
-    'keywords': 'sysadmin',
-    'url': 'https://github.com/frozflame',
-    'author': 'frozflame',
+    'description': '' + _desc,
+    'keywords': '',
+    'url': 'example.com',
+    'author': 'anonym',
     'author_email': 'anonym@example.com',
     'license': "GNU General Public License (GPL)",
     'packages': find_packages(exclude=['test_*']),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
-    'entry_points': {'console_scripts': ['sus = joker.superuser.main:registry'], },
+    # 'entry_points': {'console_scripts': ['__eg_package=__eg_namespace.__eg_package.main:run'], },
     'classifiers': [
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.0',
         'Programming Language :: Python :: 3.1',
@@ -65,11 +67,12 @@ config = {
     ],
     # ensure copy static file to runtime directory
     'include_package_data': True,
+    # 'long_description': read('README.md'),
+    # 'long_description_content_type': "text/markdown",
 }
 
-if namespace:
-    config['name'] = '{}-{}'.format(namespace, package_name)
-    config['namespace_packages'] = [namespace]
+if _nsp:
+    config['namespace_packages'] = [_nsp]
 
 
 setup(**config)

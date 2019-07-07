@@ -9,6 +9,7 @@ from volkanic.system import CommandRegistry
 entries = {
     'joker.superuser.mkconf_apt': 'apt',
     'joker.superuser.mkconf_network': 'iface',
+    'joker.superuser.python.project': 'pkg',
 }
 
 registry = CommandRegistry(entries)
