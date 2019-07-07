@@ -3,11 +3,12 @@
 
 import os
 import re
+import sys
 from os.path import join
 
 from joker.superuser.utils import under_templates_dir
 
-_nsinit_approaches = {
+_nspinit_approaches = {
     'i': '__import__("pkg_resources").declare_namespace(__name__)',
     'p': '__path__ = __import__("pkgutil").extend_path(__path__, __name__)',
 }
@@ -45,7 +46,7 @@ class ProjectDirMaker(object):
             '__init__.py': self.under_pkg_dir(),
         })
         if self.nsp:
-            self.common_files['nsinit'] = self.under_proj_dir('__init__.py')
+            self.common_files['nspinit'] = self.under_proj_dir('__init__.py')
 
     @classmethod
     def parse(cls, name):
@@ -56,7 +57,7 @@ class ProjectDirMaker(object):
         mat = re.match(r'([_A-Za-z]\w+\.)?([_A-Za-z]\w+)', name)
         if not mat:
             raise ValueError('invalid pakcage name: ' + repr(name))
-        return cls(mat.group(1) or '', mat.group(2))
+        return cls(mat.group(1)[:-1] or '', mat.group(2))
 
     def under_proj_dir(self, *paths):
         return join(self.proj, *paths)
@@ -75,14 +76,18 @@ class ProjectDirMaker(object):
         for path in self.common_files.values():
             open(path, 'a').close()
 
+    def sub(self, text):
+        text = text.replace('__sus_h_name', self.proj)
+        text = text.replace('__sus_i_name', '.'.join(self.names[1:]))
+        text = text.replace('__sus_u_name', '_'.join(self.names[1:]))
+        text = text.replace('__sus_namespace', self.nsp)
+        text = text.replace('__sus_package', self.pkg)
+        return text
+
     def gettext_setup(self, template_path):
-        dotname = '.'.join(self.names[1:])
         template_path = template_path or under_templates_dir('setup.txt')
         code = open(template_path).read()
-        code = code.replace('__eg_dotname', dotname)
-        code = code.replace('__eg_namespace', self.nsp)
-        code = code.replace('__eg_package', self.pkg)
-        return code
+        return self.sub(code)
 
     def gettext_manifest(self):
         templates_path = os.path.sep.join(self.names[1:] + ['templates'])
@@ -98,8 +103,8 @@ class ProjectDirMaker(object):
             with open(path, 'w') as fout:
                 fout.write(content + os.linesep)
 
-    def write_nsinit(self, approach):
-        self.write('nsinit', _nsinit_approaches.get(approach))
+    def write_nspinit(self, approach):
+        self.write('nspinit', _nspinit_approaches.get(approach))
 
     def write_version_variable(self):
         self.write('__init__.py', "__version__ = '0.0'")
@@ -118,16 +123,19 @@ class ProjectDirMaker(object):
         self.write('.gitignore', open(path).read())
 
 
-def make_project(name, setup, gitignore, require, nsinit_approach):
+def make_project(name, setup, gitignore, require, nspinit_approach):
     name, query = (name.split('%', maxsplit=1) + [''])[:2]
-    if query == 'nsinit':
-        print(_nsinit_approaches.get(nsinit_approach, ''))
+    if query == 'nspinit':
+        print(_nspinit_approaches.get(nspinit_approach, ''))
         return
     if query == 'gitignore':
         print(open(under_templates_dir('gitignore.txt')).read())
         return
 
     mkr = ProjectDirMaker.parse(name)
+    if query == 'sub':
+        print(mkr.sub(sys.stdin.read()))
+        return
     if query == 'setup':
         print(mkr.gettext_setup(setup))
         return
@@ -148,13 +156,12 @@ def make_project(name, setup, gitignore, require, nsinit_approach):
     mkr.write_gitignore(gitignore)
     mkr.write_requirements(require)
     mkr.write_manifest()
-    mkr.write_nsinit(nsinit_approach)
+    mkr.write_nspinit(nspinit_approach)
     mkr.write_version_variable()
 
 
 def run(prog=None, args=None):
     import argparse
-    import sys
     desc = 'generate a python project structure'
     s = ' (case sensitive)'
     # epilog = '\n'.join([
@@ -166,7 +173,7 @@ def run(prog=None, args=None):
         prog=prog, description=desc,  # epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    pr.add_argument('-n', '--nsinit-approach', choices=['i', 'p', 'e'],
+    pr.add_argument('-n', '--nspinit-approach', choices=['i', 'p', 'e'],
                     default='i', help='namespace package style')
     pr.add_argument('-s', '--setup', metavar='template_setup.py',
                     help='template for setup.py')

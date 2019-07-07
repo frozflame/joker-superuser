@@ -9,8 +9,8 @@ from setuptools import setup, find_packages
 # CAUTION:
 # Do NOT import your package from your setup.py
 
-_nsp = '__eg_namespace'
-_pkg = '__eg_package'
+_nsp = '__sus_namespace'
+_pkg = '__sus_package'
 _desc = ''
 _names = [_nsp, _pkg]
 _names = [s for s in _names if s]
@@ -51,7 +51,7 @@ config = {
     'packages': find_packages(exclude=['test_*']),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
-    # 'entry_points': {'console_scripts': ['__eg_package=__eg_namespace.__eg_package.main:run'], },
+    # 'entry_points': {'console_scripts': ['__sus_package=__sus_namespace.__sus_package.main:run']},
     'classifiers': [
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
