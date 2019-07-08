@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
+from functools import wraps
 
 
 def under_templates_dir(*paths):
@@ -8,3 +9,15 @@ def under_templates_dir(*paths):
     return under_package_dir(joker.superuser, 'templates', *paths)
 
 
+def silent_function(func):
+    """
+    Do not report any error
+    """
+    @wraps(func)
+    def sfunc(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except BaseException:
+            pass
+
+    return sfunc

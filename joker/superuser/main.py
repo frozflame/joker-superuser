@@ -10,6 +10,8 @@ entries = {
     'joker.superuser.mkconf_apt': 'apt',
     'joker.superuser.mkconf_network': 'iface',
     'joker.superuser.python.project': 'pkg',
+    'joker.superuser.shell.associative': 'shell-assoc',
+    'joker.superuser.shell.quote': 'shell-quote',
 }
 
 registry = CommandRegistry(entries)
