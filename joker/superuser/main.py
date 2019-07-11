@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 
-
+import platform
 from volkanic.system import CommandRegistry
 
 entries = {
@@ -14,6 +14,23 @@ entries = {
     'joker.superuser.shell.associative': 'shell-assoc',
     'joker.superuser.shell.quote': 'shell-quote',
 }
+
+_macos_entries = {
+    'joker.superuser.macos.share': 'share',
+}
+
+
+osname = platform.system().lower()
+
+if osname == 'darwin':
+    entries.update(_macos_entries)
+
+# elif osname == 'windows':
+#     handler = _windows_open
+# else:
+#     handler = _linux_open
+# for path in paths:
+#     handler(path)
 
 registry = CommandRegistry(entries)
 

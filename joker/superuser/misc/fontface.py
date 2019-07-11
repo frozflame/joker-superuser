@@ -47,8 +47,8 @@ class FontFaceMaker(object):
         return os.linesep.join(lines)
 
 
-def run(_, args):
-    ffm = FontFaceMaker(args[0])
+def run_onefile(path):
+    ffm = FontFaceMaker(path)
     px_out = ffm.px.with_name('_fontface.' + ffm.px.name)
     with open(px_out.with_suffix('.css'), 'w') as fout:
         fout.write(ffm.format_css())
@@ -58,3 +58,8 @@ def run(_, args):
     cmd = ['fontforge', '-script', str(px_script), str(ffm.px)]
     print(*[shlex.quote(s) for s in cmd])
     subprocess.run(cmd)
+
+
+def run(_, args):
+    for path in args:
+        run_onefile(path)
