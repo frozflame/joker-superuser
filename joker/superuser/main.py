@@ -11,8 +11,8 @@ entries = {
     'joker.superuser.misc.drawbox': 'box',
     'joker.superuser.misc.fontface': 'fontface',
     'joker.superuser.python.project': 'pkg',
-    'joker.superuser.shell.associative': 'shell-assoc',
-    'joker.superuser.shell.quote': 'shell-quote',
+    'joker.superuser.unix.assoc': 'shell-assoc',
+    'joker.superuser.unix.quote': 'shell-quote',
 }
 
 _macos_entries = {
