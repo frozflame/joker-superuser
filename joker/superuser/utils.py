@@ -3,10 +3,10 @@
 from functools import wraps
 
 
-def under_templates_dir(*paths):
+def under_asset_dir(*paths):
     import joker.superuser
     from joker.default import under_package_dir
-    return under_package_dir(joker.superuser, 'templates', *paths)
+    return under_package_dir(joker.superuser, 'asset', *paths)
 
 
 def silent_function(func):

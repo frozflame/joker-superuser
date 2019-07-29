@@ -7,12 +7,13 @@ import platform
 from volkanic.system import CommandRegistry
 
 entries = {
-    'joker.superuser.mkconf_apt': 'apt',
-    'joker.superuser.misc.drawbox': 'box',
-    'joker.superuser.misc.fontface': 'fontface',
     'joker.superuser.python.project': 'pkg',
+    'joker.superuser.unix.abbrmap': 'abbrmap',
     'joker.superuser.unix.assoc': 'shell-assoc',
     'joker.superuser.unix.quote': 'shell-quote',
+    'joker.superuser.misc.drawbox': 'box',
+    'joker.superuser.misc.newline': 'nl',
+    'joker.superuser.misc.fontface': 'fontface',
 }
 
 _macos_entries = {

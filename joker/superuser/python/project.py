@@ -8,7 +8,7 @@ from os.path import join
 
 from joker.textmanip.tabular import format_help_section
 
-from joker.superuser.utils import under_templates_dir
+from joker.superuser.utils import under_asset_dir
 
 _nsinits = {
     'i': '__import__("pkg_resources").declare_namespace(__name__)',
@@ -84,7 +84,7 @@ class ProjectDirMaker(object):
         return text
 
     def gettext_setup(self, template_path):
-        template_path = template_path or under_templates_dir('setup.txt')
+        template_path = template_path or under_asset_dir('setup.txt')
         code = open(template_path).read()
         return self.sub(code)
 
@@ -118,7 +118,7 @@ class ProjectDirMaker(object):
         self.write('MANIFEST.in', self.gettext_manifest())
 
     def write_gitignore(self, path=''):
-        path = path or under_templates_dir('gitignore.txt')
+        path = path or under_asset_dir('gitignore.txt')
         self.write('.gitignore', open(path).read())
 
 
@@ -128,7 +128,7 @@ def make_project(name, setup, gitignore, require, ns_approach):
         print(_nsinits.get(ns_approach, ''))
         return
     if query == 'gitignore':
-        print(open(under_templates_dir('gitignore.txt')).read())
+        print(open(under_asset_dir('gitignore.txt')).read())
         return
 
     mkr = ProjectDirMaker.parse(name)
