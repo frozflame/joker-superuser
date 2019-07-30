@@ -19,8 +19,9 @@ function acd() {
         $0 "$("$@")"
         return
         ;;
-    where|which)
-        $0 "$("$@")"
+    which|where)
+        shift
+        $0 "$(command -v "$@")"
         return
         ;;
     git)
