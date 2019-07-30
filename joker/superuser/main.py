@@ -7,7 +7,7 @@ import platform
 from volkanic.system import CommandRegistry
 
 entries = {
-    'joker.superuser.python.project': 'pkg',
+    'joker.superuser.python.pkgdir': 'pkg',
     'joker.superuser.unix.abbrmap': 'abbrmap',
     'joker.superuser.unix.assoc': 'shell-assoc',
     'joker.superuser.unix.quote': 'shell-quote',

@@ -1,7 +1,7 @@
 unalias acd 2>/dev/null
 function acd() {
     if [[ $1 == . ]]; then
-        echo '# .' | netcat 127.0.0.1 8330
+        echo '# .' | netcat 127.0.0.1 8331
         return
     elif [[ -d $1 ]]; then
         # shellcheck disable=SC2164
@@ -19,7 +19,7 @@ function acd() {
         $0 "$("$@")"
         return
         ;;
-    which|where)
+    which | where)
         shift
         $0 "$(command -v "$@")"
         return
@@ -31,5 +31,5 @@ function acd() {
         ;;
     esac
 
-    cd "$(echo "$1" | sed 's:\s:_:' | netcat 127.0.0.1 8330)" || return
+    cd "$(echo "$1" | sed 's:\s:_:' | netcat 127.0.0.1 8331)" || return
 }
