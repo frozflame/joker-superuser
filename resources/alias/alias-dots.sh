@@ -1,9 +1,4 @@
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-
