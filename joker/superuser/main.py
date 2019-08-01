@@ -9,8 +9,9 @@ from volkanic.system import CommandRegistry
 entries = {
     'joker.superuser.python.pkgdir': 'pkg',
     'joker.superuser.unix.abbrmap': 'abbrmap',
-    'joker.superuser.unix.assoc': 'shell-assoc',
-    'joker.superuser.unix.quote': 'shell-quote',
+    'joker.superuser.unix.source': 'cat',
+    'joker.superuser.unix.assoc': 'assoc',
+    'joker.superuser.unix.quote': 'quote',
     'joker.superuser.misc.drawbox': 'box',
     'joker.superuser.misc.newline': 'nl',
     'joker.superuser.misc.fontface': 'fontface',
