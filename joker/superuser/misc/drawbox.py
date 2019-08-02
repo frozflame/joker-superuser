@@ -25,13 +25,14 @@ def make_title_box(title, comment='#', width=50):
 
 def run(prog=None, args=None):
     desc = 'Draw title box'
-    pr = argparse.ArgumentParser(prog=prog, description=desc)
-    pr.add_argument('-t', '--title', default="Welcome",
-                    help='text in the box')
-    pr.add_argument('-c', '--comment', default='#',
-                    help='comment symbol, e.g. # or //')
-    pr.add_argument('-w', '--width', type=int, default=50,
-                    help='width of the box')
-    ns = pr.parse_args(args)
-    for line in make_title_box(ns.title, ns.comment, ns.width):
+    parser = argparse.ArgumentParser(prog=prog, description=desc)
+    aa = parser.add_argument
+    aa('-c', '--comment', default='#', metavar='SYMBOL',
+       help='comment symbol, e.g. # or //')
+    aa('-w', '--width', type=int, default=50, help='width of the box')
+    aa('title', nargs='?', default='Welcome', help='text in the box')
+    aa('title_words', nargs='*', help=argparse.SUPPRESS)
+    ns = parser.parse_args(args)
+    title = ' '.join([ns.title] + ns.title_words)
+    for line in make_title_box(title, ns.comment, ns.width):
         print(line)
