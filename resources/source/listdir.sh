@@ -13,12 +13,12 @@ else
 fi
 
 if [[ $GNULS ]]; then
-    alias ls="${GNULS} --group-directories-first -F"
-    alias ll="${GNULS} --group-directories-first -Fl"
-    alias lh="${GNULS} --group-directories-first -Flh"
-    alias li="${GNULS} --group-directories-first -Fli"
-    alias la="${GNULS} --group-directories-first -FA"
-    alias gnuls="${GNULS}"
+    alias ls="${GNULS:-gls} --group-directories-first -F"
+    alias ll="${GNULS:-gls} --group-directories-first -Fl"
+    alias lh="${GNULS:-gls} --group-directories-first -Flh"
+    alias li="${GNULS:-gls} --group-directories-first -Fli"
+    alias la="${GNULS:-gls} --group-directories-first -FA"
+    alias gnuls="${GNULS:-gls}"
 else
     alias ls="/bin/ls -F"
     alias ll="/bin/ls -Fl"
