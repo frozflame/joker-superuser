@@ -25,14 +25,11 @@ def _printerr(*args, **kwargs):
 
 
 class AbbrmapServer(CacheServer):
-    val_cmtprefix = b'#'
-
     def __init__(self, sizelimit, path):
         super(AbbrmapServer, self).__init__()
         self.data = ActiveTab(sizelimit, path)
         self.cached_commands = {b'#request'}
         self.commands = {
-            b'#xopen': self.cmd_xopen,
             b'#reload': self.cmd_reload,
             b'#update': self.cmd_update,
             b'#request': self.cmd_request,
@@ -48,7 +45,7 @@ class AbbrmapServer(CacheServer):
     def _lookup_with_command(self, key, val):
         keyval = None
         if key in self.cached_commands:
-            keyval = key + self.val_cmtprefix + val
+            keyval = key + b'.' + val
             try:
                 return self.data[keyval]
             except Exception:
@@ -86,14 +83,6 @@ class AbbrmapServer(CacheServer):
 
     def cmd_update(self, _):
         self._tpexec.submit(self.data.update)
-
-    def cmd_xopen(self, val):
-        from volkanic.default import desktop_open
-        val = b'.'.join(val.split())[:64]
-        val = b'https://a.geekinv.com/s/api/' + val
-        val = self.lookup(b'#request', val)
-        desktop_open(val.decode('latin1'))
-        return val
 
     def eviction(self, period=5):
         import time

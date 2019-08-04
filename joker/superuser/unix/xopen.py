@@ -2,6 +2,7 @@
 # coding: utf-8
 import argparse
 import os
+import re
 
 from volkanic.default import desktop_open
 
@@ -23,30 +24,56 @@ def check_abbrmap():
     return resp.startswith(b'joker-superuser')
 
 
-def aopen_nocache(*targets):
+def get_api_url(target):
+    prefix = 'https://a.geekinv.com/s/api/'
+    return prefix + '.'.join(target.split())[:64]
+
+
+def _openurl(url):
+    if not re.match(r'https?://', url):
+        return
+    try:
+        desktop_open(url)
+    except Exception as e:
+        from joker.cast.syntax import printerr
+        printerr(e)
+
+
+def _aopen_query_webapi(qs):
     import requests
-    for t in targets:
-        url = 'https://a.geekinv.com/s/api/' + '.'.join(t.split())[:64]
-        try:
-            desktop_open(requests.get(url).text)
-        except Exception as e:
-            from joker.cast.syntax import printerr
-            printerr(e)
+    api_url = get_api_url(qs)
+    url = requests.get(api_url).text
+    _openurl(url)
+
+
+def _aopen_query_local(qs):
+    from joker.minions.utils import netcat
+    api_url = get_api_url(qs)
+    line = ('#request ' + api_url).encode('latin1')
+    url = netcat('127.0.0.1', get_port_num(), line).decode('latin1')
+    _openurl(url)
 
 
 def aopen(*targets):
-    from joker.minions.utils import netcat
-    for t in targets:
-        t = '.'.join(t.split())[:64]
-        k = t.encode('utf-8')
-        netcat('127.0.0.1', get_port_num(), b'#xopen ' + k)
+    if not targets:
+        return
+    if check_abbrmap():
+        func = _aopen_query_local
+    else:
+        func = _aopen_query_webapi
+    if len(targets) == 1:
+        return func(targets[0])
+    from concurrent.futures import ThreadPoolExecutor
+    pool = ThreadPoolExecutor(max_workers=4)
+    return pool.map(func, targets)
 
 
 def xopen(*targets):
-    import re
-    from os.path import exists
+    if not targets:
+        return desktop_open('.')
     direct_locators = set()
     indirect_locators = set()
+    exists = os.path.exists
 
     for t in targets:
         if exists(t) or re.match(r'(https?|file|ftp)://', t):
@@ -54,9 +81,7 @@ def xopen(*targets):
         elif re.match(r'[\w._-]{1,64}$', t):
             indirect_locators.add(t)
     desktop_open(*direct_locators)
-    if check_abbrmap():
-        return aopen(*indirect_locators)
-    aopen_nocache(*indirect_locators)
+    aopen(*indirect_locators)
 
 
 def run(_, args):
