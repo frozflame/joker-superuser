@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
+
+import os
 from functools import wraps
 
 
@@ -19,6 +21,23 @@ def make_joker_superuser_dir(*paths):
     return make_joker_dir('superuser', *paths)
 
 
+def load_config(name):
+    import yaml
+    path = under_joker_superuser_dir(name)
+    if os.path.isfile(path):
+        return yaml.safe_load(open(path))
+
+
+def report(data, name):
+    import json
+    if not name.endswith('.json'):
+        name += '.json'
+    make_joker_superuser_dir()
+    path = under_joker_superuser_dir(name)
+    with open(path, 'w') as fout:
+        fout.write(json.dumps(data))
+
+
 def silent_function(func):
     """Do not report any error"""
 
@@ -30,3 +49,10 @@ def silent_function(func):
             pass
 
     return sfunc
+
+
+def startswith(s, *prefixes):
+    for p in prefixes:
+        if s.startswith(p):
+            return True
+    return False

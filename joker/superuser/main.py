@@ -7,13 +7,13 @@ import platform
 from volkanic.system import CommandRegistry
 
 entries = {
-    'joker.superuser.python.pkgdir': 'pkg',
-    'joker.superuser.unix.abbrmap': 'abbrmap',
-    'joker.superuser.unix.source': 'cat',
+    'joker.superuser.abbrmap': 'abbrmap',
+    'joker.superuser.python.directory': 'pydir',
+    'joker.superuser.python.entrypoint': 'pyep',
     'joker.superuser.unix.assoc': 'assoc',
+    'joker.superuser.unix.source': 'cat',
     'joker.superuser.unix.quote': 'quote',
-    'joker.superuser.misc.drawbox': 'box',
-    'joker.superuser.misc.newline': 'nl',
+    'joker.superuser.unix.xopen': 'xo',
     'joker.superuser.misc.fontface': 'fontface',
 }
 
