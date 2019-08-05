@@ -7,7 +7,6 @@ import platform
 from volkanic.system import CommandRegistry
 
 entries = {
-    'joker.superuser.abbrmap': 'abbrmap',
     'joker.superuser.python.directory': 'pydir',
     'joker.superuser.python.entrypoint': 'pyep',
     'joker.superuser.unix.assoc': 'assoc',
