@@ -1,6 +1,6 @@
 # shellcheck disable=SC2164
 
-true "${JOKER_SUPERUSER_ABBRMAP_PORT:=8331}"
+true "${JOKER_XOPEN_PORT:=18831}"
 
 unalias acd 2>/dev/null
 function acd() {
@@ -28,7 +28,7 @@ function acd() {
     # psudo-locations and special locations
     case "$1" in
     .)
-        echo '#update' | netcat 127.0.0.1 $JOKER_SUPERUSER_ABBRMAP_PORT 2>/dev/null
+        echo '#update' | netcat 127.0.0.1 $JOKER_XOPEN_PORT 2>/dev/null
         return
         ;;
     '~')
@@ -58,7 +58,7 @@ function acd() {
 
     # lookup
     local TargetDir
-    TargetDir="$(echo "$1" | sed 's:\s:_:' | netcat 127.0.0.1 $JOKER_SUPERUSER_ABBRMAP_PORT 2>/dev/null)"
+    TargetDir="$(echo "$1" | sed 's:\s:_:' | netcat 127.0.0.1 $JOKER_XOPEN_PORT 2>/dev/null)"
     if [[ $TargetDir ]]; then
         \cd "$TargetDir"
         return
