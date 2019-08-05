@@ -20,7 +20,7 @@ def _vk_join(d):
     return {k: join(v, k) for k, v in d.items()}
 
 
-class ProjectDirMaker(object):
+class ProjectDirectoryMaker(object):
     def __init__(self, nsp, pkg):
         """
         :param nsp: namespace
@@ -51,7 +51,7 @@ class ProjectDirMaker(object):
     def parse(cls, name):
         """
         :param name: e.g. "volkanic", "joker.superuser"
-        :return: a ProjectDirMaker instance
+        :return: a ProjectDirectoryMaker instance
         """
         mat = re.match(r'([_A-Za-z]\w+\.)?([_A-Za-z]\w+)', name)
         if not mat:
@@ -131,7 +131,7 @@ def make_project(name, setup, gitignore, require, ns_approach):
         print(open(under_asset_dir('gitignore.txt')).read())
         return
 
-    mkr = ProjectDirMaker.parse(name)
+    mkr = ProjectDirectoryMaker.parse(name)
     if query == 'sub':
         print(mkr.sub(sys.stdin.read()))
         return
