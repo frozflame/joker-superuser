@@ -46,10 +46,16 @@ class Spy(object):
     def load_setup_file(self, path):
         import setuptools
         path = os.path.abspath(path)
-        os.chdir(os.path.dirname(path))
-        setuptools.setup = self
-        code = open(path).read()
-        exec(code, {'__file__': path})
+        cwd = os.getcwd()
+        setup = setuptools.setup
+        try:
+            os.chdir(os.path.dirname(path))
+            setuptools.setup = self
+            code = open(path).read()
+            exec(code, {'__file__': path})
+        finally:
+            os.chdir(cwd)
+            setuptools.setup = setup
 
 
 def inspect_setuppy(path):
