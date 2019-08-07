@@ -6,6 +6,8 @@ import sys
 
 
 class Dot(object):
+    result = None
+
     def __getattr__(self, name):
         return self
 
@@ -21,6 +23,8 @@ class Dot(object):
 
 
 class FunctionWrapper(object):
+    __slots__ = ['func']
+
     def __init__(self, func):
         self.func = func
 
@@ -87,6 +91,16 @@ def printer(*args, **kwargs):
     return FunctionWrapper(lambda iterable: prints(iterable, *args, **kwargs))
 
 
+def _report(obj, use_repr=False, use_prints=False, **kwargs):
+    func = prints if use_prints else print
+    if use_repr:
+        if use_prints:
+            obj = (repr(o) for o in obj)
+        else:
+            obj = repr(obj)
+    func(obj, **kwargs)
+
+
 def get_global_context(arguments, argnumerify=False):
     from joker.textmanip.stream import ShellStream
     if argnumerify:
@@ -123,9 +137,15 @@ def get_global_context(arguments, argnumerify=False):
     return ctx_global
 
 
+def hook(result):
+    Dot.result = result
+
+
 def olexec(text, ctx):
     code = compile(text, '-', 'single')
-    return exec(code, ctx)
+    sys.displayhook = hook
+    exec(code, ctx)
+    return Dot.result
 
 
 def run(prog, args):
@@ -135,11 +155,15 @@ def run(prog, args):
     aa = pr.add_argument
     aa('-n', '--numerify', action='store_true',
        help='convert values to int/float if possible')
-    aa('code', help='python code or "-" to read from stdin')
+    aa('-r', '--repr', action='store_true',
+       help='print repr() of the final result')
+    aa('-s', '--prints', action='store_true',
+       help='show final result with prints()')
+    aa('code', help='python statements separated by ";"')
     aa('argument', nargs='*', help='a[0-9]+ and args in code')
     ns = pr.parse_args(args)
     arguments = [ns.code] + ns.argument
     ctx = get_global_context(arguments, ns.numerify)
     rv = olexec(ns.code, ctx)
     if rv is not None:
-        print(rv)
+        _report(rv, use_prints=ns.prints, use_repr=ns.repr)
