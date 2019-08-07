@@ -9,10 +9,10 @@ from volkanic.system import CommandRegistry
 entries = {
     'joker.superuser.python.directory': 'pydir',
     'joker.superuser.python.entrypoint': 'pyep',
+    'joker.superuser.python.oneliner': 'ol',
     'joker.superuser.unix.assoc': 'assoc',
     'joker.superuser.unix.source': 'cat',
     'joker.superuser.unix.quote': 'quote',
-    'joker.superuser.unix.xopen': 'xo',
     'joker.superuser.misc.fontface': 'fontface',
 }
 
