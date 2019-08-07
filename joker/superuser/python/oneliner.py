@@ -142,7 +142,7 @@ def hook(result):
 
 
 def olexec(text, ctx):
-    code = compile(text, '-', 'single')
+    code = compile(text.strip(), '-', 'single')
     sys.displayhook = hook
     exec(code, ctx)
     return Dot.result

@@ -10,8 +10,9 @@ entries = {
     'joker.superuser.python.directory': 'pydir',
     'joker.superuser.python.entrypoint': 'pyep',
     'joker.superuser.python.oneliner': 'ol',
+    'joker.superuser.unix.source': 'srccat',
     'joker.superuser.unix.assoc': 'assoc',
-    'joker.superuser.unix.source': 'cat',
+    'joker.superuser.unix.cases': 'cases',
     'joker.superuser.unix.quote': 'quote',
     'joker.superuser.misc.fontface': 'fontface',
 }
