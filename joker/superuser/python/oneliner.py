@@ -3,6 +3,7 @@
 import builtins
 import os
 import sys
+import math
 
 
 class Dot(object):
@@ -108,7 +109,7 @@ def get_global_context(arguments, argnumerify=False):
         arguments = [numerify(x) for x in arguments]
 
     wa = FunctionWrapper.wrap_attributes
-    ctx = wa(os.path, os, sys, str, builtins)
+    ctx = wa(os, os.path, sys, str, builtins, math)
     ctx['prints'] = prints
     ctx['printer'] = printer
 
@@ -120,13 +121,13 @@ def get_global_context(arguments, argnumerify=False):
         'stdout': ShellStream(sys.stdout),
         'stderr': ShellStream(sys.stderr),
         'os': os,
+        'math': math,
         're': ModuleWrapper('re'),
         'np': ModuleWrapper('numpy'),
-        'math': ModuleWrapper('math'),
         'args': arguments,
         'prints': ol.prints,
         'printer': ol.puts,
-        'P': FunctionWrapper,
+        'wrapf': FunctionWrapper,
     }
     for i, v in enumerate(arguments):
         k = 'a{}'.format(i)
