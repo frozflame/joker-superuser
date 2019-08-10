@@ -9,12 +9,8 @@ from volkanic.system import CommandRegistry
 entries = {
     'joker.superuser.python.directory': 'pydir',
     'joker.superuser.python.entrypoint': 'pyent',
-    'joker.superuser.python.oneliner': 'ol',
-    'joker.superuser.unix.source': 'srccat',
-    'joker.superuser.unix.assoc': 'assoc',
     'joker.superuser.unix.cases': 'cases',
-    'joker.superuser.unix.quote': 'quote',
-    'joker.superuser.misc.fontface': 'fontface',
+    'joker.superuser.unix.unsource': 'unsource',
 }
 
 _macos_entries = {
