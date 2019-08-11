@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # coding: utf-8
 import argparse
-import os
 import re
 import shlex
-import sys
 
 
 def extract_case(path, title='subcmd'):
@@ -63,4 +61,3 @@ def run(prog, args):
         print(ns.title + ':')
         for pat in pats:
             print('-', pat)
-

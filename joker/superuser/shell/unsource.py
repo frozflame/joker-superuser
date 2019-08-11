@@ -4,11 +4,9 @@
 import os
 import re
 import shlex
-import sys
 
 import requests
 from joker.cast.collective import CircularReferenceDetector
-
 from joker.stream import Stream
 from joker.stream.shell import RecursiveInclusionStream, ShellStream
 
