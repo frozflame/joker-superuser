@@ -22,11 +22,12 @@ brew install unzip
 brew install unar # The unarchiver CLI
 brew install vim --override-system-vi
 
+# GNU utils
 brew install bash
 brew install gdb # gdb requires further actions to make it work. See `brew info gdb`.
+brew install coreutils
 brew install gpatch
 brew install make
-brew install coreutils
 brew install binutils
 brew install diffutils
 brew install ed
