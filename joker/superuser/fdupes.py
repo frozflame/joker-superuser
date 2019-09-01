@@ -1,24 +1,19 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-import os
 import re
-import sys
 from os.path import isfile, abspath
 
-from joker.textmanip.stream import ShellStream
+from joker.cast.iterative import split
+from joker.stream.shell import ShellStream
 
 
 def parse_fdupes_output(path):
-    groups = [[]]
-    with ShellStream.open(path) as stream:
-        for line in stream.snl():
-            if not line:
-                groups.append([])
-                continue
-            if os.path.isfile(line):
-                groups[-1].append(line)
-    return groups
+    with ShellStream.open(path).snl() as stream:
+        for tup in split(stream, lambda x: not x):
+            elements = tup[-1]
+            if elements:
+                yield elements
 
 
 def check_existence(groups):
@@ -36,5 +31,23 @@ def search_pattern(groups, pattern):
                 break
 
 
-if __name__ == '__main__':
-    parse_fdupes_output(sys.argv[1])
+def _parse_args(prog, args):
+    import argparse
+    desc = 'search with regex in fdupes output'
+    pr = argparse.ArgumentParser(prog=prog, description=desc)
+    aa = pr.add_argument
+    aa('-p', '--pattern', help='regular expression')
+    aa('path', help='fdupes output text file')
+    return pr.parse_args(args)
+
+
+def run(prog, args):
+    ns = _parse_args(prog, args)
+    groups = parse_fdupes_output(ns.path)
+    groups = check_existence(groups)
+    if ns.pattern:
+        groups = search_pattern(groups, ns.pattern)
+    for grp in groups:
+        for line in grp:
+            print(line)
+        print()

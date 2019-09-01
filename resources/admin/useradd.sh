@@ -40,7 +40,7 @@ touch "${userdir}"/.ssh/authorized_keys
 # login ---------------------------------------------------
 chmod 700 "${userdir}"/.ssh
 chmod 600 "${userdir}"/.ssh/authorized_keys
-chown "${username}":"${username}" -R ${userdir}
+chown "${username}":"${username}" -R "${userdir}"
 
 if [[ $2 == su ]]; then
     usermod -a -G sudo "${username}"
