@@ -1,0 +1,11 @@
+﻿Windows Registry Editor Version 5.00
+
+; Created by: Shawn Brink
+; Created on: December 25th 2016
+; Updated on: April 23rd 2017
+; Tutorial: https://www.tenforums.com/tutorials/73314-enable-disable-windows-key-windows-10-a.html
+
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]
+"Scancode Map"=-
+

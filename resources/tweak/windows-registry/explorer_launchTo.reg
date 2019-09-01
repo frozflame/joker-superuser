@@ -1,0 +1,7 @@
+﻿Windows Registry Editor Version 5.00
+
+; https://superuser.com/questions/952291/windowse-opens-quick-access-instead-opening-windows-explorer-in-windows-10
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"LaunchTo"=dword:1
+
