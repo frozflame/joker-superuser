@@ -1,5 +1,4 @@
-﻿Windows Registry Editor Version 5.00
-
+Windows Registry Editor Version 5.00
 ; 1 to show, 2 to hide
 
 [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
