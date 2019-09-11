@@ -56,3 +56,4 @@ target/
 .sass-cache
 docs/TODO.txt
 _legacy
+tmp/
