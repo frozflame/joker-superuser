@@ -40,7 +40,7 @@ brew install gnu-which
 brew install gnutls
 brew install grep
 brew install gzip
-brew install screen
+brew install tmux
 brew install watch
 brew install gettext
 brew install wget

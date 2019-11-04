@@ -1,4 +1,4 @@
-function SilentlyDelete-File($path)
+function SilentlyRemove-File($path)
 {
     if ( [System.IO.File]::Exists($path))
     {
@@ -7,16 +7,16 @@ function SilentlyDelete-File($path)
 }
 
 
-function SilentlyDelete-DesktopFile([string[]]$names)
+function SilentlyRemove-DesktopFile([string[]]$names)
 {
     $UserDesktop = [Environment]::GetFolderPath("Desktop")
     $PublicDesktop = ([Environment]::GetEnvironmentVariable("Public")) + "\Desktop"
 
     foreach ($name in $names)
     {
-        SilentlyDelete-File("$UserDesktop\" + $name)
-        SilentlyDelete-File("$PublicDesktop\" + $name)
+        SilentlyRemove-File("$UserDesktop\" + $name)
+        SilentlyRemove-File("$PublicDesktop\" + $name)
     }
 }
 
-SilentlyDelete-DesktopFile($args)
+SilentlyRemove-DesktopFile($args)
