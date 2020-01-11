@@ -78,7 +78,7 @@ def unsource(outpath, *locators):
     with Stream.open(outpath, 'w') as fout:
         for loc in locators:
             with UnsourceStream.openloc(loc) as ustm:
-                for line in ustm.setup().nonblank():
+                for line in ustm.setup().dense():
                     fout.write(line + os.linesep)
 
 
