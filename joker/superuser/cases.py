@@ -44,7 +44,7 @@ def extract_pats(text):
 
 
 def run(prog, args):
-    desc = 'extract patterns of a case construct from a shell scripot'
+    desc = 'extract patterns of a case construct from a shell script'
     pr = argparse.ArgumentParser(prog=prog, description=desc)
     aa = pr.add_argument
     aa('path', metavar='PATH', help='path to a shell script')

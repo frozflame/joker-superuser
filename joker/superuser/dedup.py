@@ -136,7 +136,7 @@ def _make_script(pairs):
 
 def _parse_args(prog, args):
     import argparse
-    desc = 'search with regex in fdupes output'
+    desc = 'find duplicating files recursively'
     pr = argparse.ArgumentParser(prog=prog, description=desc)
 
     pr.add_argument('-s', '--size', type=int,
