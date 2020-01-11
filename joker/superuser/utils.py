@@ -65,3 +65,8 @@ def find_regular_files(dirpath, **kwargs):
             if os.path.isfile(path):
                 yield path
 
+
+def check_filesys_case_sensitivity(dirname='.'):
+    from tempfile import TemporaryDirectory
+    with TemporaryDirectory(prefix='.sus-tmp', dir=dirname) as tmp:
+        return not os.path.exists(tmp.upper())

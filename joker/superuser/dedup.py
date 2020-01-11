@@ -13,6 +13,9 @@ from joker.stream.utils import checksum
 from joker.superuser import utils
 
 
+# TODO: use a sha1sum txt file
+
+
 def _thresh(size, minsize):
     if size >= minsize:
         return size
