@@ -10,7 +10,7 @@ entries = {
     'joker.superuser.python.entrypoint': 'pyent',
     'joker.superuser.shell.unsource': 'unsource',
     'joker.superuser.shell.cases': 'cases',
-    'joker.superuser.fdupes': 'fdupes',
+    'joker.superuser.dedup': 'dup',
     'joker.superuser.setop': 'setop',
 }
 
