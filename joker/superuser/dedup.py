@@ -139,7 +139,7 @@ def _parse_args(prog, args):
     desc = 'find duplicating files recursively'
     pr = argparse.ArgumentParser(prog=prog, description=desc)
 
-    pr.add_argument('-s', '--size', type=int,
+    pr.add_argument('-s', '--size', type=int, default=1,
                     help='minimum size for consideration')
     pr.add_argument('-p', '--pattern', metavar='regex',
                     help='select a subset of duplicating groups')
