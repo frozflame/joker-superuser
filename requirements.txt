@@ -2,4 +2,7 @@ pyyaml
 requests
 six
 joker
+joker-cast>=0.4
+joker-stream>=0.4
+joker-textmanip
 volkanic
