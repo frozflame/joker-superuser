@@ -43,13 +43,16 @@ def _plural(grp):
         return grp
 
 
-def _sort_plural(grp):
-    if len(grp) > 1:
-        grp.sort(reverse=True)
-        return grp
-
-
 def _subgroup(groups, kfunc, gfunc):
+    """
+    separate each group into sub-groups
+    :param groups: a list of lists
+    :param kfunc: kfunc(path) => a differentiating property of a file,
+        or None to ignore that file
+    :param gfunc: gfunc(group) => a modified group,
+        or None to ignore that group
+    :return: a list of lists (sub-groups)
+    """
     subgrps = []
     for grp in groups:
         aux = defaultdict(list)
@@ -63,14 +66,17 @@ def _subgroup(groups, kfunc, gfunc):
     return subgrps
 
 
-def find_duplicates(dirs, minsize=0):
+def find_duplicates(dirs, minsize=0, bold=False):
     all_files = []
     for path in dirs:
         all_files.extend(utils.find_regular_files(path))
     sizefunc = get_sizefunc(minsize)
     grps = _subgroup([all_files], sizefunc, _plural)
     grps = _subgroup(grps, chksum_head, _plural)
-    grps = _subgroup(grps, chksum, _sort_plural)
+    if not bold:
+        grps = _subgroup(grps, chksum, _plural)
+    for grp in grps:
+        grp.sort()
     return grps
 
 
@@ -138,16 +144,22 @@ def _parse_args(prog, args):
     import argparse
     desc = 'find duplicating files recursively'
     pr = argparse.ArgumentParser(prog=prog, description=desc)
+    aa = pr.add_argument
 
-    pr.add_argument('-s', '--size', type=int, default=1,
-                    help='minimum size for consideration')
-    pr.add_argument('-p', '--pattern', metavar='regex',
-                    help='select a subset of duplicating groups')
-    pr.add_argument('-P', '--protect', metavar='regex',
-                    help='prevent certain file from being deleted')
+    aa('-B', '--bold', action='store_true',
+       help='skip full-size checksum comparison')
 
-    pr.add_argument('-f', '--fdupes', help='an fdupes output file')
-    pr.add_argument('dirs', nargs='*', help='target directories')
+    aa('-s', '--size', type=int, default=1,
+       help='minimum size for consideration')
+
+    aa('-p', '--pattern', metavar='regex',
+       help='select a subset of duplicating groups')
+
+    aa('-P', '--protect', metavar='regex',
+       help='prevent certain file from being deleted')
+
+    aa('-f', '--fdupes', help='an fdupes output file')
+    aa('dirs', metavar='DIR', nargs='*', help='target directory')
     return pr.parse_args(args)
 
 
@@ -159,7 +171,7 @@ def run(prog, args):
         groups = parse_fdupes_output(ns.path)
         groups = check_existence(groups)
     else:
-        groups = find_duplicates(ns.dirs, minsize=ns.size)
+        groups = find_duplicates(ns.dirs, minsize=ns.size, bold=ns.bold)
     if ns.pattern:
         groups = search_pattern(groups, ns.pattern)
     p_groups = prioritize(groups, ns.protect)
