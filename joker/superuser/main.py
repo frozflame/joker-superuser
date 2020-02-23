@@ -12,6 +12,7 @@ entries = {
     'joker.superuser.cases': 'cases',
     'joker.superuser.dedup': 'dup',
     'joker.superuser.setop': 'setop',
+    'joker.superuser.remove': 'rmdir',
 }
 
 registry = CommandRegistry(entries)
