@@ -66,7 +66,7 @@ class ProjectDirectoryMaker(object):
         :param name: e.g. "mypkg", "mynsp.mypkg"
         :return: a ProjectDirectoryMaker instance
         """
-        mat = re.match(r'([_A-Za-z]\w+\.|)([_A-Za-z]\w+)', name)
+        mat = re.match(r'([_A-Za-z]\w*\.|)([_A-Za-z]\w*)', name)
         if not mat:
             raise ValueError('invalid pakcage name: ' + repr(name))
         return cls(mat.group(1)[:-1] or '', mat.group(2))
@@ -161,7 +161,8 @@ def make_project(name, alt, setup, gitignore, require, nsp_approach):
         return
 
     try:
-        return print(mkr.locate(alt) + '')
+        # TODO
+        return print(mkr.locate(alt or '') + '')
     except TypeError:
         pass
 
