@@ -15,7 +15,7 @@ from joker.superuser.utils import under_asset_dir
 logger = logging.Logger(__name__)
 
 
-_nsinits = {
+_nspinits = {
     'i': '__import__("pkg_resources").declare_namespace(__name__)',
     'p': '__path__ = __import__("pkgutil").extend_path(__path__, __name__)',
 }
@@ -58,7 +58,7 @@ class ProjectDirectoryMaker(object):
         })
         if self.nsp:
             p = join(self.hyf_name, self.nsp, '__init__.py')
-            self.common_files['nsinit'] = p
+            self.common_files['nspinit'] = p
 
     @classmethod
     def parse(cls, name):
@@ -121,8 +121,8 @@ class ProjectDirectoryMaker(object):
             with open(path, 'a') as fout:
                 fout.write(content + os.linesep)
 
-    def write_nsinit(self, approach):
-        self.write('nsinit', _nsinits.get(approach))
+    def write_nspinit(self, approach):
+        self.write('nspinit', _nspinits.get(approach))
 
     def write_version_variable(self):
         self.write('__init__.py', "__version__ = '0.0'")
@@ -142,8 +142,8 @@ class ProjectDirectoryMaker(object):
 
 
 def make_project(name, alt, setup, gitignore, require, nsp_approach):
-    if alt == 'nsinit':
-        print(_nsinits.get(nsp_approach, ''))
+    if alt == 'nspinit':
+        print(_nspinits.get(nsp_approach, ''))
         return
     if alt == 'gitignore':
         print(open(under_asset_dir('gitignore.txt')).read())
@@ -174,7 +174,7 @@ def make_project(name, alt, setup, gitignore, require, nsp_approach):
     mkr.write_gitignore(gitignore)
     mkr.write_requirements(require or [])
     mkr.write_manifest()
-    mkr.write_nsinit(nsp_approach)
+    mkr.write_nspinit(nsp_approach)
     mkr.write_version_variable()
 
 
@@ -183,7 +183,7 @@ def run(prog=None, args=None):
     desc = 'Generate a python project structure'
     # s = ' (case sensitive)'
     epilog = '\n'.join([
-        format_help_section('Namespace package approaches', _nsinits),
+        format_help_section('Namespace package approaches', _nspinits),
         'About namespace packages:',
         '  https://packaging.python.org/guides/packaging-namespace-packages/',
     ])
@@ -192,7 +192,7 @@ def run(prog=None, args=None):
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
     pr.add_argument('-a', '--alt',
-                    choices=['nsinit', 'gitignore', 'sub', 'setup', 'manifest'],
+                    choices=['nspinit', 'gitignore', 'sub', 'setup', 'manifest'],
                     help='alternative action')
 
     pr.add_argument('-n', '--nsp-approach', choices=['i', 'p', 'e'],
