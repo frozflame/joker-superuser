@@ -27,8 +27,8 @@ function acd() {
 
     # psudo-locations and special locations
     case "$1" in
-    .)
-        echo '#update' | netcat 127.0.0.1 $JOKER_XOPEN_PORT 2>/dev/null
+    . | -u)
+        echo update | netcat 127.0.0.1 $JOKER_XOPEN_PORT 2>/dev/null
         return
         ;;
     '~')
@@ -58,7 +58,7 @@ function acd() {
 
     # lookup
     local TargetDir
-    TargetDir="$(echo "$1" | sed 's:\s:_:' | netcat 127.0.0.1 $JOKER_XOPEN_PORT 2>/dev/null)"
+    TargetDir="$(echo "get $1" | netcat 127.0.0.1 $JOKER_XOPEN_PORT 2>/dev/null)"
     if [[ $TargetDir ]]; then
         \cd "$TargetDir"
         return
