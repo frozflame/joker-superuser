@@ -16,6 +16,7 @@ fi
 
 if [[ $GNULS ]]; then
     alias ls="${GNULS} --group-directories-first -F"
+    alias LS="${GNULS} --group-directories-first -Ftr"
     alias ll="${GNULS} --group-directories-first -Fl"
     alias lh="${GNULS} --group-directories-first -Flh"
     alias li="${GNULS} --group-directories-first -Fli"
@@ -23,6 +24,7 @@ if [[ $GNULS ]]; then
     alias gnuls="${GNULS}"
 else
     alias ls="/bin/ls -F"
+    alias LS="/bin/ls -Ftr"
     alias ll="/bin/ls -Fl"
     alias lh="/bin/ls -Flh"
     alias li="/bin/ls -Fli"
