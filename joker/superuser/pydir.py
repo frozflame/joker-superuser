@@ -4,11 +4,16 @@
 import os
 import re
 import sys
-from os.path import join
+from os.path import join, relpath
+import logging
 
 from joker.textmanip.tabular import format_help_section
 
 from joker.superuser.utils import under_asset_dir
+
+
+logger = logging.Logger(__name__)
+
 
 _nsinits = {
     'i': '__import__("pkg_resources").declare_namespace(__name__)',
@@ -28,41 +33,50 @@ class ProjectDirectoryMaker(object):
         """
         self.nsp = nsp.strip()
         self.pkg = pkg.strip()
-        names = [s for s in [self.nsp, self.pkg]]
-        self.names = ['-'.join(names)] + names
-        testdir_name = '_'.join(['test'] + self.names[1:])
+        if self.nsp:
+            names = [self.nsp, self.pkg]
+            self.dot_name = '.'.join(names)
+            self.hyf_name = '-'.join(names)
+            self.uns_name = '_'.join(names)
+            self.names = names
+        else:
+            self.dot_name = self.pkg
+            self.hyf_name = self.pkg
+            self.uns_name = self.pkg
+            self.names = [self.pkg]
         self.common_dirs = {
             'docs': self.under_proj_dir('docs'),
+            'test': self.under_proj_dir('test_' + self.uns_name),
             'templates': self.under_pkg_dir('templates'),
-            'test': self.under_proj_dir(testdir_name),
         }
         self.common_files = _vk_join({
-            '.gitignore': self.names[0],
-            'requirements.txt': self.names[0],
-            'MANIFEST.in': self.names[0],
-            'setup.py': self.names[0],
             '__init__.py': self.under_pkg_dir(),
+            'requirements.txt': self.hyf_name,
+            'MANIFEST.in': self.hyf_name,
+            '.gitignore': self.hyf_name,
+            'setup.py': self.hyf_name,
         })
         if self.nsp:
-            p = join(self.names[0], self.nsp, '__init__.py')
+            p = join(self.hyf_name, self.nsp, '__init__.py')
             self.common_files['nsinit'] = p
 
     @classmethod
     def parse(cls, name):
         """
-        :param name: e.g. "volkanic", "joker.superuser"
+        :param name: e.g. "mypkg", "mynsp.mypkg"
         :return: a ProjectDirectoryMaker instance
         """
-        mat = re.match(r'([_A-Za-z]\w+\.)?([_A-Za-z]\w+)', name)
+        mat = re.match(r'([_A-Za-z]\w+\.|)([_A-Za-z]\w+)', name)
         if not mat:
             raise ValueError('invalid pakcage name: ' + repr(name))
         return cls(mat.group(1)[:-1] or '', mat.group(2))
 
     def under_proj_dir(self, *paths):
-        return join(self.names[0], *paths)
+        return join(self.hyf_name, *paths)
 
     def under_pkg_dir(self, *paths):
-        return join(*(self.names + list(paths)))
+        parts = [self.hyf_name] + self.names + list(paths)
+        return join(*parts)
 
     def locate(self, name):
         if name.endswith('/'):
@@ -76,9 +90,9 @@ class ProjectDirectoryMaker(object):
             open(path, 'a').close()
 
     def sub(self, text):
-        text = text.replace('__sus_h_name', self.names[0])
-        text = text.replace('__sus_i_name', '.'.join(self.names[1:]))
-        text = text.replace('__sus_u_name', '_'.join(self.names[1:]))
+        text = text.replace('__sus_h_name', self.hyf_name)
+        text = text.replace('__sus_i_name', self.dot_name)
+        text = text.replace('__sus_u_name', self.uns_name)
         text = text.replace('__sus_namespace', self.nsp)
         text = text.replace('__sus_package', self.pkg)
         return text
@@ -89,11 +103,16 @@ class ProjectDirectoryMaker(object):
         return self.sub(code)
 
     def gettext_manifest(self):
-        templates_path = os.path.sep.join(self.names[1:] + ['templates'])
+        # CAUTION: not self.common_dirs['templates']!
+        # relative to self.under_proj_dir()!
         return os.linesep.join([
             'include requirements.txt',
-            'exclude {}/*'.format(self.common_dirs['test']),
-            'recursive-include {} *.html'.format(templates_path)
+            'exclude {}/*'.format(
+                relpath(self.common_dirs['test'], self.hyf_name),
+            ),
+            'recursive-include {} *.html'.format(
+                relpath(self.common_dirs['templates'], self.hyf_name),
+            )
         ]) + os.linesep
 
     def write(self, name, content):
@@ -122,10 +141,10 @@ class ProjectDirectoryMaker(object):
         self.write('.gitignore', open(path).read())
 
 
-def make_project(name, setup, gitignore, require, ns_approach):
+def make_project(name, setup, gitignore, require, nsp_approach):
     name, query = (name.split('%', maxsplit=1) + [''])[:2]
     if query == 'nsinit':
-        print(_nsinits.get(ns_approach, ''))
+        print(_nsinits.get(nsp_approach, ''))
         return
     if query == 'gitignore':
         print(open(under_asset_dir('gitignore.txt')).read())
@@ -155,7 +174,7 @@ def make_project(name, setup, gitignore, require, ns_approach):
     mkr.write_gitignore(gitignore)
     mkr.write_requirements(require or [])
     mkr.write_manifest()
-    mkr.write_nsinit(ns_approach)
+    mkr.write_nsinit(nsp_approach)
     mkr.write_version_variable()
 
 
@@ -172,7 +191,7 @@ def run(prog=None, args=None):
         prog=prog, description=desc,  epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
 
-    pr.add_argument('-n', '--ns-approach', choices=['i', 'p', 'e'],
+    pr.add_argument('-n', '--nsp-approach', choices=['i', 'p', 'e'],
                     default='i', help='namespace package approach')
 
     pr.add_argument('-s', '--setup', metavar='template_setup.py',
