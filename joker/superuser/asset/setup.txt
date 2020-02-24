@@ -9,8 +9,8 @@ from setuptools import setup, find_packages
 # CAUTION:
 # Do NOT import your package from your setup.py
 
-_nsp = '__sus_namespace'
-_pkg = '__sus_package'
+_nsp = '__sus_nsp'
+_pkg = '__sus_pkg'
 _desc = ''
 _names = [_nsp, _pkg]
 _names = [s for s in _names if s]
@@ -40,7 +40,7 @@ def version_find():
 
 
 config = {
-    'name': '-'.join(_names),
+    'name': '__sus_hyf_name',
     'version': version_find(),
     'description': '' + _desc,
     'keywords': '',
@@ -51,7 +51,7 @@ config = {
     'packages': find_packages(exclude=['test_*']),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
-    # 'entry_points': {'console_scripts': ['__sus_package=__sus_namespace.__sus_package.main:run']},
+    # 'entry_points': {'console_scripts': ['__sus_pkg=__sus_nsp.__sus_pkg.main:run']},
     'classifiers': [
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',

@@ -90,11 +90,11 @@ class ProjectDirectoryMaker(object):
             open(path, 'a').close()
 
     def sub(self, text):
-        text = text.replace('__sus_h_name', self.hyf_name)
-        text = text.replace('__sus_i_name', self.dot_name)
-        text = text.replace('__sus_u_name', self.uns_name)
-        text = text.replace('__sus_namespace', self.nsp)
-        text = text.replace('__sus_package', self.pkg)
+        text = text.replace('__sus_hyf_name', self.hyf_name)
+        text = text.replace('__sus_dot_name', self.dot_name)
+        text = text.replace('__sus_uns_name', self.uns_name)
+        text = text.replace('__sus_nsp', self.nsp)
+        text = text.replace('__sus_pkg', self.pkg)
         return text
 
     def gettext_setup(self, template_path):
@@ -141,33 +141,32 @@ class ProjectDirectoryMaker(object):
         self.write('.gitignore', open(path).read())
 
 
-def make_project(name, setup, gitignore, require, nsp_approach):
-    name, query = (name.split('%', maxsplit=1) + [''])[:2]
-    if query == 'nsinit':
+def make_project(name, alt, setup, gitignore, require, nsp_approach):
+    if alt == 'nsinit':
         print(_nsinits.get(nsp_approach, ''))
         return
-    if query == 'gitignore':
+    if alt == 'gitignore':
         print(open(under_asset_dir('gitignore.txt')).read())
         return
 
     mkr = ProjectDirectoryMaker.parse(name)
-    if query == 'sub':
+    if alt == 'sub':
         print(mkr.sub(sys.stdin.read()))
         return
-    if query == 'setup':
+    if alt == 'setup':
         print(mkr.gettext_setup(setup))
         return
-    if query == 'manifest':
+    if alt == 'manifest':
         print(mkr.gettext_manifest())
         return
 
     try:
-        return print(mkr.locate(query) + '')
+        return print(mkr.locate(alt) + '')
     except TypeError:
         pass
 
-    if query:
-        raise ValueError('invalid query: ' + repr(query))
+    if alt:
+        raise ValueError('invalid action: ' + repr(alt))
 
     mkr.make_dirs()
     mkr.write_setup(setup)
@@ -190,6 +189,10 @@ def run(prog=None, args=None):
     pr = argparse.ArgumentParser(
         prog=prog, description=desc,  epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    pr.add_argument('-a', '--alt',
+                    choices=['nsinit', 'gitignore', 'sub', 'setup', 'manifest'],
+                    help='alternative action')
 
     pr.add_argument('-n', '--nsp-approach', choices=['i', 'p', 'e'],
                     default='i', help='namespace package approach')
