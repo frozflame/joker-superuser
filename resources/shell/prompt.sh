@@ -23,12 +23,12 @@ zsh-1)
     ;;
 bash-0)
     PS1CLR1=36
-    PS1="\n\[\\e[${PS1CLR1}m\]\u\[\e[33m\] \w \[\e[0m\]\$ "
+    PS1="\n\[\\e[${PS1CLR1}m\]\u\[\e[33m\] \w \[\e[0m\]\\$ "
     ;;
 bash-1)
-    # shellcheck disable=SC2025
     # shellcheck disable=SC2154
-    export PS1="\n${debian_chroot:+($debian_chroot)}\u@\H \e[33m\w\e[0m \$ "
+    # shellcheck disable=SC2025
+    export PS1="\n${debian_chroot:+($debian_chroot)}\u@\H \e[33m\w\e[0m \\$ "
     ;;
 esac
 
