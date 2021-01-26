@@ -13,6 +13,7 @@ entries = {
     'joker.superuser.dedup': 'dup',
     'joker.superuser.setop': 'setop',
     'joker.superuser.remove': 'rmdir',
+    'joker.superuser.apt': 'apt',
 }
 
 registry = CommandRegistry(entries)
