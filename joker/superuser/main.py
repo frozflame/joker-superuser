@@ -5,18 +5,19 @@ from __future__ import unicode_literals
 
 from volkanic.system import CommandRegistry
 
-entries = {
-    'joker.superuser.pydir': 'pydir',
-    'joker.superuser.pyentry': 'pyentry',
-    'joker.superuser.unsource': 'unsource',
-    'joker.superuser.cases': 'cases',
-    'joker.superuser.dedup': 'dup',
-    'joker.superuser.setop': 'setop',
-    'joker.superuser.remove': 'rmdir',
-    'joker.superuser.apt': 'apt',
-}
 
-registry = CommandRegistry(entries)
+cmddef = """
+pydir       joker.superuser.pydir
+pyentry     joker.superuser.pyentry
+unsource    joker.superuser.unsource
+cases       joker.superuser.cases
+dup         joker.superuser.dedup
+setop       joker.superuser.setop
+rmdir       joker.superuser.remove
+apt         joker.superuser.apt
+"""
+
+registry = CommandRegistry.from_cmddef(cmddef)
 
 if __name__ == '__main__':
     registry()

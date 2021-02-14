@@ -5,4 +5,4 @@ joker
 joker-cast>=0.4
 joker-stream>=0.4
 joker-textmanip
-volkanic
+volkanic>=0.2.1
