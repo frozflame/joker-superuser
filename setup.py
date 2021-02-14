@@ -4,14 +4,14 @@
 import os
 import re
 
-from setuptools import setup, find_packages
+import setuptools
 
 # CAUTION:
 # Do NOT import your package from your setup.py
 
 namespace = 'joker'
 package_name = 'superuser'
-description = ''
+description = 'tools for power users'
 
 
 def read(filename):
@@ -19,7 +19,7 @@ def read(filename):
         return f.read()
 
 
-def version_find():
+def _find_version():
     if namespace:
         path = '{}/{}/__init__.py'.format(namespace, package_name)
     else:
@@ -39,35 +39,41 @@ def version_find():
     raise ValueError('__version__ definition not found')
 
 
+def _find_packages():
+    return setuptools.find_namespace_packages(include=['joker.*'])
+
+
 config = {
     'name': package_name,
-    'version': version_find(),
+    'version': _find_version(),
     'description': '' + description,
     'keywords': 'sysadmin',
     'url': 'https://github.com/frozflame/joker-superuser',
     'author': 'frozflame',
     'author_email': 'frozflame@outlook.com',
     'license': "GNU General Public License (GPL)",
-    'packages': find_packages(exclude=['test_*']),
+    'packages': _find_packages(),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
     'entry_points': {'console_scripts': ['sus = joker.superuser.main:registry'], },
     'classifiers': [
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     # ensure copy static file to runtime directory
     'include_package_data': True,
+    # 'long_description': read('README.md'),
+    # 'long_description_content_type': "text/markdown",
 }
 
 if namespace:
     config['name'] = '{}-{}'.format(namespace, package_name)
     config['namespace_packages'] = [namespace]
 
-
-setup(**config)
-
+setuptools.setup(**config)
