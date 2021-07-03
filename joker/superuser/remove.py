@@ -8,7 +8,7 @@ import sys
 
 
 def remove_empty_dirs(rootdir, dry=False):
-    for directory, dirnames, filenames in os.walk(rootdir):
+    for directory, dirnames, filenames in os.walk(rootdir, topdown=False):
         if not dirnames and not filenames:
             if not dry:
                 os.rmdir(directory)
