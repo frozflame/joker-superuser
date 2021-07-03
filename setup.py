@@ -10,8 +10,9 @@ from setuptools import find_namespace_packages
 # CAUTION:
 # Do NOT import your package from your setup.py
 
-namespace = 'joker'
-package_name = 'superuser'
+_nsp = 'joker'
+_pkg = 'superuser'
+project_name = 'joker-superuser'
 description = 'tools for power users'
 
 
@@ -21,10 +22,10 @@ def read(filename):
 
 
 def _find_version():
-    if namespace:
-        path = '{}/{}/__init__.py'.format(namespace, package_name)
+    if _nsp:
+        path = '{}/{}/__init__.py'.format(_nsp, _pkg)
     else:
-        path = '{}/__init__.py'.format(package_name)
+        path = '{}/__init__.py'.format(_pkg)
     root = os.path.dirname(__file__)
     path = os.path.join(root, path)
     regex = re.compile(
@@ -41,7 +42,7 @@ def _find_version():
 
 
 config = {
-    'name': 'joker-superuser',
+    'name': project_name,
     'version': _find_version(),
     'description': '' + description,
     'keywords': 'sysadmin',
@@ -71,8 +72,8 @@ config = {
     'long_description_content_type': "text/markdown",
 }
 
-if namespace:
-    config['name'] = '{}-{}'.format(namespace, package_name)
-    config['namespace_packages'] = [namespace]
+if _nsp:
+    config['name'] = project_name,
+    config['namespace_packages'] = [_nsp]
 
 setuptools.setup(**config)
