@@ -10,9 +10,10 @@ import logging
 from joker.textmanip.tabular import format_help_section
 
 from joker.superuser.utils import under_asset_dir
+from joker.superuser.environ import GlobalInterface
 
-
-logger = logging.Logger(__name__)
+_gi = GlobalInterface()
+_logger = logging.Logger(__name__)
 
 
 _nspinits = {
@@ -35,15 +36,17 @@ class ProjectDirectoryMaker(object):
         self.pkg = pkg.strip()
         if self.nsp:
             names = [self.nsp, self.pkg]
-            self.dot_name = '.'.join(names)
-            self.hyf_name = '-'.join(names)
-            self.uns_name = '_'.join(names)
-            self.names = names
         else:
-            self.dot_name = self.pkg
-            self.hyf_name = self.pkg
-            self.uns_name = self.pkg
-            self.names = [self.pkg]
+            names = [self.pkg]
+        self.names = names
+        self.dot_name = '.'.join(names)
+        self.hyf_name = '-'.join(names)
+        self.uns_name = '_'.join(names)
+
+        self.package_name = '.'.join(names)
+        self.project_name = '-'.join(names)
+        self.identifier = '_'.join(names)
+
         self.common_dirs = {
             'docs': self.under_proj_dir('docs'),
             'test': self.under_proj_dir('test_' + self.uns_name),
@@ -97,10 +100,15 @@ class ProjectDirectoryMaker(object):
         text = text.replace('__sus_pkg', self.pkg)
         return text
 
-    def gettext_setup(self, template_path):
+    def _gettext_setup(self, template_path):
         template_path = template_path or under_asset_dir('setup.txt')
         code = open(template_path).read()
         return self.sub(code)
+
+    def gettext_setup(self, template_path=None):
+        jinja2 = _gi.jinja2_env
+        tpl = jinja2.get_template('setup.py.jinja2')
+        return tpl.render(self.__dict__)
 
     def gettext_manifest(self):
         # CAUTION: not self.common_dirs['templates']!
@@ -187,28 +195,30 @@ def run(prog=None, args=None):
         'About namespace packages:',
         '  https://packaging.python.org/guides/packaging-namespace-packages/',
     ])
-    pr = argparse.ArgumentParser(
-        prog=prog, description=desc,  epilog=epilog,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        prog=prog, description=desc, epilog=epilog,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    add = parser.add_argument
 
-    pr.add_argument('-a', '--alt',
-                    choices=['nspinit', 'gitignore', 'sub', 'setup', 'manifest'],
-                    help='alternative action')
+    add('-a', '--alt',
+        choices=['nspinit', 'gitignore', 'sub', 'setup', 'manifest'],
+        help='alternative action')
 
-    pr.add_argument('-n', '--nsp-approach', choices=['i', 'p', 'e'],
-                    default='i', help='namespace package approach')
+    add('-n', '--nsp-approach', choices=['i', 'p', 'e'],
+        default='i', help='namespace package approach')
 
-    pr.add_argument('-s', '--setup', metavar='template_setup.py',
-                    help='path to a custom setup.py template')
+    add('-s', '--setup', metavar='template_setup.py',
+        help='path to a custom setup.py template')
 
-    pr.add_argument('-g', '--gitignore', metavar='template_gitignore.txt',
-                    help='path to a custom .gitignore template')
+    add('-g', '--gitignore', metavar='template_gitignore.txt',
+        help='path to a custom .gitignore template')
 
-    pr.add_argument('-r', '--require', action='append', metavar='PACKAGE',
-                    help='example: -r six -r numpy>=1.0.0')
+    add('-r', '--require', action='append', metavar='PACKAGE',
+        help='example: -r six -r numpy>=1.0.0')
 
-    pr.add_argument('name', metavar='[NAMESPACE.]PACKAGE_NAME[%QUERY]')
-    ns = pr.parse_args(args)
+    add('name', metavar='[NAMESPACE.]PACKAGE_NAME[%QUERY]')
+    ns = parser.parse_args(args)
 
     try:
         make_project(**vars(ns))
