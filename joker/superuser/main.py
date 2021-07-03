@@ -14,7 +14,7 @@ cases       joker.superuser.cases
 dup         joker.superuser.dedup
 setop       joker.superuser.setop
 rmdir       joker.superuser.remove
-apt         joker.superuser.apt
+apt         joker.superuser.tools.apt
 url         joker.superuser.tools.urls
 urls        joker.superuser.tools.urls:runloop
 """

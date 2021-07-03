@@ -61,10 +61,10 @@ deb http{s}://{host}/debian-security/ {codename}/updates main contrib non-free
 """
 
 apt_ubuntu = """\
-deb http{s}://{host}/ubuntu/ ${codename} main restricted universe multiverse
-deb http{s}://{host}/ubuntu/ ${codename}-security main restricted universe multiverse
-deb http{s}://{host}/ubuntu/ ${codename}-updates main restricted universe multiverse
-deb http{s}://{host}/ubuntu/ ${codename}-backports main restricted universe multiverse
+deb http{s}://{host}/ubuntu/ {codename} main restricted universe multiverse
+deb http{s}://{host}/ubuntu/ {codename}-security main restricted universe multiverse
+deb http{s}://{host}/ubuntu/ {codename}-updates main restricted universe multiverse
+deb http{s}://{host}/ubuntu/ {codename}-backports main restricted universe multiverse
 """
 
 
