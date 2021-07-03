@@ -44,7 +44,7 @@ def _find_packages():
         pat = '{}.*'.format(_nsp)
         return setuptools.find_namespace_packages(include=[pat])
     else:
-        find_packages(exclude=['test_*'])
+        return setuptools.find_packages(exclude=['test_*'])
 
 
 config = {
@@ -59,7 +59,7 @@ config = {
     'packages': _find_packages(),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
-    # 'entry_points': {'console_scripts': ['__sus_pkg=__sus_nsp.__sus_pkg.main:run']},
+    # 'entry_points': {'console_scripts': ['__sus_pkg=__sus_nsp.__sus_pkg.__main__:run']},
     'classifiers': [
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
