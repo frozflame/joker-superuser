@@ -12,6 +12,7 @@ from setuptools import find_namespace_packages
 
 _nsp = 'joker'
 _pkg = 'superuser'
+_names = ['joker', 'superuser']
 project_name = 'joker-superuser'
 description = 'tools for power users'
 
@@ -65,6 +66,7 @@ config = {
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     # ensure copy static file to runtime directory
     'include_package_data': True,
@@ -73,7 +75,6 @@ config = {
 }
 
 if _nsp:
-    config['name'] = project_name,
     config['namespace_packages'] = [_nsp]
 
 setuptools.setup(**config)
