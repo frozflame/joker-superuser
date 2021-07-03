@@ -15,6 +15,8 @@ dup         joker.superuser.dedup
 setop       joker.superuser.setop
 rmdir       joker.superuser.remove
 apt         joker.superuser.apt
+url         joker.superuser.tools.urls
+urls        joker.superuser.tools.urls:runloop
 """
 
 registry = CommandRegistry.from_cmddef(cmddef)
