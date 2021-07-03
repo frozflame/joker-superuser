@@ -41,7 +41,7 @@ def _find_version():
 
 
 config = {
-    'name': package_name,
+    'name': 'joker-superuser',
     'version': _find_version(),
     'description': '' + description,
     'keywords': 'sysadmin',
@@ -67,8 +67,8 @@ config = {
     ],
     # ensure copy static file to runtime directory
     'include_package_data': True,
-    # 'long_description': read('README.md'),
-    # 'long_description_content_type': "text/markdown",
+    'long_description': read('README.md'),
+    'long_description_content_type': "text/markdown",
 }
 
 if namespace:
