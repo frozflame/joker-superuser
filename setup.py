@@ -52,7 +52,9 @@ config = {
     'packages': find_namespace_packages(include=['joker.*']),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
-    'entry_points': {'console_scripts': ['sus = joker.superuser.main:registry'], },
+    'entry_points': {
+        'console_scripts': ['sus = joker.superuser.__main__:registry'],
+    },
     'classifiers': [
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
