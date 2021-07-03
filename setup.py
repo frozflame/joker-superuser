@@ -5,6 +5,7 @@ import os
 import re
 
 import setuptools
+from setuptools import find_namespace_packages
 
 # CAUTION:
 # Do NOT import your package from your setup.py
@@ -39,10 +40,6 @@ def _find_version():
     raise ValueError('__version__ definition not found')
 
 
-def _find_packages():
-    return setuptools.find_namespace_packages(include=['joker.*'])
-
-
 config = {
     'name': package_name,
     'version': _find_version(),
@@ -52,7 +49,7 @@ config = {
     'author': 'frozflame',
     'author_email': 'frozflame@outlook.com',
     'license': "GNU General Public License (GPL)",
-    'packages': _find_packages(),
+    'packages': find_namespace_packages(include=['joker.*']),
     'zip_safe': False,
     'install_requires': read("requirements.txt"),
     'entry_points': {'console_scripts': ['sus = joker.superuser.main:registry'], },
