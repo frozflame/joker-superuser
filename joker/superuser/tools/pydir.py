@@ -133,7 +133,7 @@ class ProjectDirectoryMaker(object):
         self.write('nspinit', _nspinits.get(approach))
 
     def write_version_variable(self):
-        self.write('__init__.py', "__version__ = '0.0'")
+        self.write('__init__.py', "__version__ = '0.0.1'")
 
     def write_requirements(self, lines):
         self.write('requirements.txt', os.linesep.join(lines))
