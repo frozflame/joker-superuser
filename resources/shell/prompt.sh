@@ -1,5 +1,5 @@
 # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-case "$(ps -p $$ -o comm= | sed 's:\W::')-$(( ${#SSH_CLIENT}  + ${#SSH_TTY} ? 1 : 0 ))" in
+case "$(ps -p $$ -o comm= | sed 's:[^a-z]::')-$(( ${#SSH_CLIENT}  + ${#SSH_TTY} ? 1 : 0 ))" in
 zsh-0)
     # %n = $USERNAME
     # %~ = $PWD, with leading $HOME or named directory replaced
