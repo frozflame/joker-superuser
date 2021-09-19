@@ -17,4 +17,3 @@ function _inkscape_theme_restore {
     _restore /Applications/Inkscape.app/Contents/Resources/etc/gtk-2.0/gtkrc.bak
 }
 
-
