@@ -1,19 +1,31 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import logging
 import os
 import re
 import sys
 from os.path import join, relpath
-import logging
 
 from joker.textmanip.tabular import format_help_section
 
-from joker.superuser.utils import under_asset_dir
 from joker.superuser.environ import GlobalInterface
+from joker.superuser.utils import under_asset_dir
 
-_gi = GlobalInterface()
+gi = GlobalInterface()
 _logger = logging.Logger(__name__)
+
+_pkg_init = """
+__version__ = "0.0.0"
+if __name__ == "__main__":
+    print(__version__)
+"""
+
+_nsp_inits = {
+    'pkg_resources': '__import__("pkg_resources").declare_namespace(__name__)',
+    'pkgutil': '__path__ = __import__("pkgutil").extend_path(__path__, __name__)',
+    'native': None,
+}
 
 _nspinits = {
     'pkg_resources': '__import__("pkg_resources").declare_namespace(__name__)',
@@ -101,7 +113,7 @@ class ProjectDirectoryMaker(object):
         return self.sub(code)
 
     def gettext_setup(self, template_path=None):
-        jinja2 = _gi.jinja2_env
+        jinja2 = gi.jinja2_env
         tpl = jinja2.get_template('setup.py.jinja2')
         return tpl.render(self.__dict__)
 
