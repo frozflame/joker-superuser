@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import os.path
 import platform
 import sys
 
@@ -35,7 +36,8 @@ def under_chrome_default_dir(*paths):
 
 
 def get_chrome_history_db_files():
-    return [
+    paths = [
         under_chrome_default_dir('History'),
         under_chrome_default_dir('Archived History'),
     ]
+    return [os.path.exists(p) for p in paths]
