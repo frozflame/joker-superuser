@@ -46,7 +46,7 @@ _all_presets = {
     'log': ["*.log"],
     'win': ['desktop.ini', 'thumbs.db'],
     'mac': ['.DS_Store'],
-    'mauve': ['mauve*'],
+    # 'mauve': ['mauve*'],
     'blast': [
         '*.phr', '*.pin', '*.psq',
         '*.nhr', '*.nin', '*.nsq',
