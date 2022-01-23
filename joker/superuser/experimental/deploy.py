@@ -40,9 +40,9 @@ def _check_json5(path: str):
 
 def check_json5(path: str):
     try:
-        _ = json5.loads(open(path))
+        _ = json5.load(open(path))
         print('OK', path, sep='\t')
-    except Exception:
+    except ValueError:
         print('ERR', path, sep='\t')
 
 
