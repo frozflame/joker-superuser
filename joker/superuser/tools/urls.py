@@ -4,16 +4,16 @@
 import argparse
 import shlex
 import sys
-from joker.superuser.environ import GlobalInterface
 
 import pyperclip
+from joker.superuser.environ import JokerInterface
 from joker.textmanip.url import url_simplify
 
-gi = GlobalInterface()
+ji = JokerInterface()
 
 
 def smart_url_simplify(url, queries):
-    config = gi.conf['urls']
+    config = ji.conf['urls']
     for pattern, _queries in config.items():
         if pattern in url:
             queries = _queries

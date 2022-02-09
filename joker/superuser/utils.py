@@ -6,34 +6,27 @@ from functools import wraps
 
 
 def under_asset_dir(*paths):
-    import joker.superuser
-    from volkanic.utils import under_package_dir
-    return under_package_dir(joker.superuser, 'asset', *paths)
-
-
-def under_joker_superuser_dir(*paths):
-    from joker.environ.provincial import under_joker_dir
-    return under_joker_dir('superuser', *paths)
-
-
-def make_joker_superuser_dir(*paths):
-    from joker.environ.provincial import make_joker_dir
-    return make_joker_dir('superuser', *paths)
+    from joker.superuser.environ import JokerInterface
+    ji = JokerInterface()
+    return ji.under_package_dir('asset', *paths)
 
 
 def load_config(name):
     import yaml
-    path = under_joker_superuser_dir(name)
+    from joker.superuser.environ import JokerInterface
+    ji = JokerInterface
+    path = ji.under_joker_subdir(name)
     if os.path.isfile(path):
         return yaml.safe_load(open(path))
 
 
 def report(data, name):
     import json
+    from joker.superuser.environ import JokerInterface
+    ji = JokerInterface()
     if not name.endswith('.json'):
         name += '.json'
-    make_joker_superuser_dir()
-    path = under_joker_superuser_dir(name)
+    path = ji.under_joker_subdir(name, mkdirs=True)
     with open(path, 'w') as fout:
         fout.write(json.dumps(data))
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-import joker.environ
+import joker.meta
 
 
-class GlobalInterface(joker.environ.GlobalInterface):
+class JokerInterface(joker.meta.JokerInterface):
     package_name = 'joker.superuser'
 
     default_config = {
@@ -13,4 +13,3 @@ class GlobalInterface(joker.environ.GlobalInterface):
             "youtube.com/playlist": ["list"],
         }
     }
-

@@ -7,12 +7,11 @@ import re
 import sys
 from os.path import join, relpath
 
+from joker.superuser.environ import JokerInterface
+from joker.superuser.utils import under_asset_dir
 from joker.textmanip.tabular import format_help_section
 
-from joker.superuser.environ import GlobalInterface
-from joker.superuser.utils import under_asset_dir
-
-gi = GlobalInterface()
+ji = JokerInterface()
 _logger = logging.Logger(__name__)
 
 _pkg_init = """
@@ -113,7 +112,7 @@ class ProjectDirectoryMaker(object):
         return self.sub(code)
 
     def gettext_setup(self, template_path=None):
-        jinja2 = gi.jinja2_env
+        jinja2 = ji.jinja2_env
         tpl = jinja2.get_template('setup.py.jinja2')
         return tpl.render(self.__dict__)
 

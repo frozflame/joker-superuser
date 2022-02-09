@@ -10,6 +10,9 @@ from joker.cast.collective import CircularReferenceDetector
 from joker.stream import Stream
 from joker.stream.shell import RecursiveInclusionStream, ShellStream
 
+from joker.superuser.environ import JokerInterface
+
+ji = JokerInterface()
 regex_http = re.compile(r'https?://')
 
 
@@ -48,9 +51,7 @@ class UnsourceStream(RecursiveInclusionStream, ShellStream):
 def get_rc_path(name, userdir=True):
     if userdir:
         return _abspath('~/.' + name)
-    from joker.superuser import utils
-    utils.make_joker_superuser_dir()
-    return utils.under_joker_superuser_dir(name)
+    return ji.under_joker_subdir(name, mkdirs=True)
 
 
 def has_sourced(loc, t_loc):
