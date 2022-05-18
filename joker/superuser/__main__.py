@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from __future__ import unicode_literals
-
 import volkanic
 
 cmddef = """
+l           joker.superuser.cli.locators:main
+chksumdirs  joker.superuser.cli.checksumdirs:main
 pydir       joker.superuser.tools.pydir
 pyentry     joker.superuser.tools.pyentry
 unsource    joker.superuser.tools.unsource
@@ -14,7 +14,6 @@ dup         joker.superuser.tools.dedup
 setop       joker.superuser.tools.setop
 rmdir       joker.superuser.tools.remove
 apt         joker.superuser.tools.apt
-l           joker.superuser.cli.locators:main
 url         joker.superuser.tools.urls
 urls        joker.superuser.tools.urls:runloop
 """
