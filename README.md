@@ -17,6 +17,6 @@ Get resources with curl and tar:
 Recent changes
 --------------
 
-version 0.2.4
+version 0.2.5
 - add sub-commands `l` (locators) and `chksumdir`
 - require Python version 3.6+
