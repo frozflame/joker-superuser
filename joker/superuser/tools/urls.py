@@ -6,8 +6,10 @@ import shlex
 import sys
 
 import pyperclip
-from joker.superuser.environ import JokerInterface
 from joker.textmanip.url import url_simplify
+from volkanic.utils import ignore_arguments
+
+from joker.superuser.environ import JokerInterface
 
 ji = JokerInterface()
 
@@ -37,7 +39,8 @@ def run(prog, args):
     _copy_and_print(url)
 
 
-def runloop(prog, args):
+@ignore_arguments
+def runloop():
     while True:
         userinput = input('URL> ')
         parts = shlex.split(userinput)
