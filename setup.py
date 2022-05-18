@@ -53,6 +53,7 @@ config = {
     'license': "GNU General Public License (GPL)",
     'packages': find_namespace_packages(include=['joker.*']),
     'zip_safe': False,
+    'python_requires': ">=3.6",
     'install_requires': read("requirements.txt"),
     'entry_points': {
         'console_scripts': ['sus = joker.superuser.__main__:registry'],
@@ -60,8 +61,6 @@ config = {
     'classifiers': [
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

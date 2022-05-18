@@ -14,6 +14,7 @@ dup         joker.superuser.tools.dedup
 setop       joker.superuser.tools.setop
 rmdir       joker.superuser.tools.remove
 apt         joker.superuser.tools.apt
+l           joker.superuser.cli.locators:main
 url         joker.superuser.tools.urls
 urls        joker.superuser.tools.urls:runloop
 """

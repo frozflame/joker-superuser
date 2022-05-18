@@ -36,9 +36,10 @@ def silent_function(func):
 
     @wraps(func)
     def sfunc(*args, **kwargs):
+        # noinspection PyBroadException
         try:
             return func(*args, **kwargs)
-        except BaseException:
+        except Exception:
             pass
 
     return sfunc
