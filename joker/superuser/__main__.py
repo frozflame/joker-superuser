@@ -19,6 +19,8 @@ rmdir           joker.superuser.tools.remove
 apt             joker.superuser.tools.apt
 url             joker.superuser.tools.urls
 urls            joker.superuser.tools.urls:runloop
+urlquote        joker.superuser.tools.urls:urlquote
+htmlesc         joker.superuser.tools.urls:htmlescape
 """
 
 _prog = 'python3 -m joker.superuser'

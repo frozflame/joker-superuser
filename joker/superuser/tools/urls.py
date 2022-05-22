@@ -4,14 +4,25 @@
 import argparse
 import shlex
 import sys
+from html import escape
+from urllib.parse import quote_plus
 
 import pyperclip
+from joker.superuser.environ import JokerInterface
 from joker.textmanip.url import url_simplify
 from volkanic.utils import ignore_arguments
 
-from joker.superuser.environ import JokerInterface
-
 ji = JokerInterface()
+
+
+def urlquote(_prog: str, args):
+    for s in args:
+        print(quote_plus(s))
+
+
+def htmlescape(_prog: str, args):
+    for s in args:
+        print(escape(s))
 
 
 def smart_url_simplify(url, queries):
