@@ -6,7 +6,7 @@ import os
 import re
 
 import json5
-from joker.interfaces.repos import Repository
+from joker.filesys.git import Repository
 
 
 def _fmt_error_line(colno: int, errmsg: str):
