@@ -1,5 +1,5 @@
 joker-cast>=0.4
-joker-filesys
+joker-filesys~=0.2.1
 joker-stream>=0.4
 joker-textmanip
 joker~=0.3.1
