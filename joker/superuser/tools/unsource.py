@@ -13,7 +13,7 @@ from joker.stream.shell import RecursiveInclusionStream, ShellStream
 from joker.superuser.environ import JokerInterface
 
 ji = JokerInterface()
-regex_http = re.compile(r'https?://')
+regex_http = re.compile(r"https?://")
 
 
 def _abspath(path):
@@ -38,7 +38,7 @@ class UnsourceStream(RecursiveInclusionStream, ShellStream):
             stm = cls.wrap(http_get(locator))
             crd_ident = locator
         else:
-            stm = super(UnsourceStream, cls).open(locator, mode='r')
+            stm = super(UnsourceStream, cls).open(locator, mode="r")
             crd_ident = _abspath(locator)
         if crd is None:
             stm.crd = CircularReferenceDetector(crd_ident)
@@ -50,7 +50,7 @@ class UnsourceStream(RecursiveInclusionStream, ShellStream):
 
 def get_rc_path(name, userdir=True):
     if userdir:
-        return _abspath('~/.' + name)
+        return _abspath("~/." + name)
     return ji.under_joker_subdir(name, mkdirs=True)
 
 
@@ -70,13 +70,13 @@ def has_sourced(loc, t_loc):
 def add_source(path, target):
     if has_sourced(path, target):
         return
-    with open(path, 'a') as fout:
-        line = '\nsource ' + shlex.quote(target) + '\n'
+    with open(path, "a") as fout:
+        line = "\nsource " + shlex.quote(target) + "\n"
         fout.write(line)
 
 
 def unsource(outpath, *locators):
-    with Stream.open(outpath, 'w') as fout:
+    with Stream.open(outpath, "w") as fout:
         for loc in locators:
             with UnsourceStream.openloc(loc) as ustm:
                 for line in ustm.setup().dense():
@@ -85,13 +85,14 @@ def unsource(outpath, *locators):
 
 def run(prog, args):
     import argparse
-    desc = 'expand shell scripts with sourced files replaced by contents'
+
+    desc = "expand shell scripts with sourced files replaced by contents"
     pr = argparse.ArgumentParser(prog=prog, description=desc)
-    pr.add_argument('-a', '--apply', choices=['zshrc', 'bashrc'])
-    pr.add_argument('files', nargs='+', help='shell scripts')
+    pr.add_argument("-a", "--apply", choices=["zshrc", "bashrc"])
+    pr.add_argument("files", nargs="+", help="shell scripts")
     ns = pr.parse_args(args)
     if not ns.apply:
-        return unsource('-', *ns.files)
+        return unsource("-", *ns.files)
     outpath = get_rc_path(ns.apply, userdir=False)
     unsource(outpath, *ns.files)
     add_source(get_rc_path(ns.apply, userdir=True), outpath)

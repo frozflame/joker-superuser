@@ -5,7 +5,7 @@ import joker.meta
 
 
 class JokerInterface(joker.meta.JokerInterface):
-    package_name = 'joker.superuser'
+    package_name = "joker.superuser"
 
     default_config = {
         "urls": {

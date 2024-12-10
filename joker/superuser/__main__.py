@@ -23,8 +23,8 @@ urlquote        joker.superuser.tools.urls:urlquote
 htmlesc         joker.superuser.tools.urls:htmlescape
 """
 
-_prog = 'python3 -m joker.superuser'
+_prog = "python3 -m joker.superuser"
 registry = volkanic.CommandRegistry.from_cmddef(cmddef, _prog)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     registry()

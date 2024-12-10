@@ -5,7 +5,7 @@ import sys
 
 
 def hexify(path: str):
-    with open(path, 'rb') as fin, open(path + '.hex', 'w') as fout:
+    with open(path, "rb") as fin, open(path + ".hex", "w") as fout:
         chunk = fin.read(32)
         while chunk:
             print(chunk.hex())
@@ -18,5 +18,5 @@ def _run():
         hexify(path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     _run()

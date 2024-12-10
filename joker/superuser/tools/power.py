@@ -16,14 +16,14 @@ Now drawing from 'Battery Power'
 
 
 class MacPowerStatusQuery(object):
-    cmd_args = ['pmset', '-g', 'batt']
+    cmd_args = ["pmset", "-g", "batt"]
 
     def __init__(self):
         p = subprocess.run(self.cmd_args, capture_output=True, text=True)
         self.resp = p.stdout
 
     def is_using_ac(self):
-        return b'AC Power' in self.resp
+        return b"AC Power" in self.resp
 
     def is_using_battery(self):
-        return b'Battery Power' in self.resp
+        return b"Battery Power" in self.resp

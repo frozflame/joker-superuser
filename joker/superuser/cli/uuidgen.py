@@ -17,13 +17,12 @@ def _format(uuidobj: UUID, std=False, lower=False) -> str:
 
 
 def main(prog=None, args=None):
-    desc = 'generate uuid'
+    desc = "generate uuid"
     parser = argparse.ArgumentParser(prog=prog, description=desc)
     add = parser.add_argument
-    add('-l', '--lower', action='store_true', help='lower case')
-    add('-s', '--std', action='store_true',
-        help='use standard hyphen-delimited format')
-    add('-v', '--ver', type=int, default=4, choices=[1, 4])
+    add("-l", "--lower", action="store_true", help="lower case")
+    add("-s", "--std", action="store_true", help="use standard hyphen-delimited format")
+    add("-v", "--ver", type=int, default=4, choices=[1, 4])
 
     ns = parser.parse_args(args)
     versions = {1: uuid1, 4: uuid4}

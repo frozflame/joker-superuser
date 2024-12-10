@@ -26,7 +26,7 @@ def htmlescape(_prog: str, args):
 
 
 def smart_url_simplify(url, queries):
-    config = ji.conf['urls']
+    config = ji.conf["urls"]
     for pattern, _queries in config.items():
         if pattern in url:
             queries = _queries
@@ -41,10 +41,10 @@ def _copy_and_print(url: str):
 
 
 def run(prog, args):
-    desc = 'simplify a url'
+    desc = "simplify a url"
     parser = argparse.ArgumentParser(prog=prog, description=desc)
-    parser.add_argument('url')
-    parser.add_argument('query', nargs='*')
+    parser.add_argument("url")
+    parser.add_argument("query", nargs="*")
     ns = parser.parse_args(args)
     url = str(smart_url_simplify(ns.url, ns.query))
     _copy_and_print(url)
@@ -53,7 +53,7 @@ def run(prog, args):
 @ignore_arguments
 def runloop():
     while True:
-        userinput = input('URL> ')
+        userinput = input("URL> ")
         parts = shlex.split(userinput)
         if not parts:
             continue
