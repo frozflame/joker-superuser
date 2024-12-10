@@ -1,0 +1,8 @@
+Changes of joker-superuser
+--------------------------
+
+ver 0.2.7
+- add sysadmin.py; add parse_blank_line_separated_records()
+- add test_imports.py; add 'from __future__ import annotations'
+- fmt code with Black
+- add get_chrome_default_profile_dir(), get_chrome_history_db_files(), under_chrome_default_dir()
