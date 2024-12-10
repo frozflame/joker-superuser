@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from functools import wraps
+from typing import Iterable
 
 
 def under_asset_dir(*paths):
@@ -69,3 +70,20 @@ def check_filesys_case_sensitivity(dirname="."):
 
     with TemporaryDirectory(prefix=".sus-tmp", dir=dirname) as tmp:
         return not os.path.exists(tmp.upper())
+
+
+def parse_blank_line_separated_records(lines: Iterable[str]) -> Iterable[dict]:
+    record = {}
+    for line in lines:
+        line = line.strip()
+        if not line:
+            if record:
+                yield record
+                record = {}
+            continue
+        key, val = line.strip().split(":", 1)
+        key = key.strip()
+        val = val.strip()
+        record[key] = val
+    if record:
+        yield record
